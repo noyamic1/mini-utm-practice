@@ -1,0 +1,11 @@
+{
+  "name": "mini-utm",
+  "private": true,
+  "scripts": {
+    "setup": "npm install && npm --prefix server install && npm --prefix client install",
+    "dev": "concurrently -n server,client -c blue,magenta \"npm --prefix server run dev\" \"npm --prefix client run dev\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}

@@ -1,0 +1,86 @@
+/* Visual language borrowed from aeronautical charts: pale paper, navy ink, magenta airspace. */
+@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600&display=swap');
+
+:root {
+  --paper: #edf1f4;
+  --ink: #13294b;
+  --ink-soft: #4a5f7d;
+  --rule: #c9d3dd;
+  --magenta: #a51c6e;
+  --amber: #b86e00;
+  --ok: #1f7a55;
+  font-family: 'Barlow', system-ui, sans-serif;
+  color: var(--ink);
+  background: var(--paper);
+}
+
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; margin: 0; }
+
+.app { display: grid; grid-template-columns: 340px 1fr; height: 100%; }
+.map-wrap { position: relative; min-height: 0; }
+.map { width: 100%; height: 100%; }
+
+.panel { overflow-y: auto; padding: 20px 20px 32px; border-right: 1px solid var(--rule); }
+.panel-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+
+h1, h2, .callsign, .drone-label { font-family: 'Barlow Condensed', sans-serif; }
+h1 { font-size: 1.75rem; font-weight: 600; line-height: 1.1; margin: 0; }
+h2 { font-size: 1.125rem; font-weight: 500; color: var(--ink-soft); margin: 28px 0 6px; }
+.sub { margin: 4px 0 0; color: var(--ink-soft); font-size: 0.9rem; }
+
+.conn { font-size: 0.8rem; padding: 2px 10px; border: 1px solid currentColor; border-radius: 999px; white-space: nowrap; }
+.conn-live { color: var(--ok); }
+.conn-connecting { color: var(--amber); }
+.conn-offline { color: var(--magenta); }
+
+.fleet, .alerts { list-style: none; margin: 0; padding: 0; }
+.fleet li { border-top: 1px solid var(--rule); }
+
+.drone-row {
+  all: unset; box-sizing: border-box; width: 100%; cursor: pointer;
+  display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; padding: 10px 6px;
+}
+.drone-row[aria-pressed='true'] { background: #fff; }
+.callsign { font-size: 1.15rem; font-weight: 600; }
+.status { font-size: 0.85rem; align-self: center; }
+.status-breach { color: var(--magenta); font-weight: 600; }
+.status-hold { color: var(--amber); }
+.metrics { grid-column: 1 / -1; display: flex; gap: 14px; font-size: 0.85rem; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.battery { grid-column: 1 / -1; height: 3px; margin-top: 4px; background: var(--rule); }
+.battery > span { display: block; height: 100%; background: var(--ink); }
+
+.resume, .notice button {
+  font: inherit; font-size: 0.85rem; cursor: pointer;
+  padding: 5px 12px; border-radius: 4px; border: 1px solid var(--ink); background: var(--ink); color: #fff;
+}
+.resume { margin: 0 6px 10px; }
+
+.alerts li { display: grid; grid-template-columns: 4.75rem 1fr; gap: 8px; padding: 8px 0; border-top: 1px solid var(--rule); font-size: 0.9rem; }
+.alerts time { color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.alert-enter .msg { color: var(--magenta); font-weight: 500; }
+.empty { color: var(--ink-soft); font-size: 0.9rem; max-width: 32ch; }
+
+button:focus-visible, .drone-row:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+.drone { display: flex; flex-direction: column; align-items: center; gap: 1px; cursor: grab; }
+.drone svg { width: 26px; height: 26px; fill: var(--ink); stroke: #fff; stroke-width: 1.5; }
+.drone.is-hold svg { fill: var(--amber); }
+.drone.is-breach svg { fill: var(--magenta); }
+.drone-label { font-size: 11px; font-weight: 600; padding: 0 5px; border-radius: 2px; background: #fff; color: var(--ink); }
+.drone.is-selected .drone-label { background: var(--ink); color: #fff; }
+
+.notice {
+  position: absolute; left: 50%; bottom: 24px; transform: translateX(-50%);
+  display: flex; align-items: center; gap: 12px; max-width: calc(100% - 32px);
+  padding: 10px 14px; background: #fff; border-left: 4px solid var(--magenta); border-radius: 4px;
+  box-shadow: 0 2px 10px rgb(19 41 75 / 0.18);
+}
+
+.setup { max-width: 60ch; margin: 15vh auto; padding: 0 24px; line-height: 1.5; }
+.setup code { background: #fff; padding: 1px 5px; border-radius: 3px; }
+
+@media (max-width: 760px) {
+  .app { grid-template-columns: 1fr; grid-template-rows: 55% 45%; }
+  .panel { order: 2; border-right: 0; border-top: 1px solid var(--rule); }
+}
